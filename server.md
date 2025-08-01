@@ -91,3 +91,67 @@ so
 2. send sqlite files in binary over http
 
 3. everything else
+
+so
+
+server sends the sqilte file to us
+we copy it and use the copy while logging our execs
+server sends us new patches
+we apply them to the original and then apply ours too
+and then we send them our resolved patches
+
+server side, we send them patches immidiately
+they apply them and send their own resolved patches
+if we have more patches since then, send them too
+so only if we dont have our own patches we apply theirs
+is this a good idea?
+
+wait if we only care about new line and delete line
+cant we just apply servers patches to our copy?
+problem would only be with ids
+
+what about this: we create event and they create the same one and then delete it
+yea seems like we need a copy but do we though?
+
+if we delete event and they delete it its fine
+if we create event and they create it its fine
+if we delete event and they didnt even have that event its fine
+if they delete event and create it again, and we delete event, who wins? by timestamp
+if we create event and they create the same one and they delete it, who wins? us
+
+what about ids tho, wait do we even need them?
+WAIT WE DONT EVEN NEED EVENT IDS
+
+so cant we just apply changes to our true db?
+
+cant we just make it so creates cancell same creates and deletes cancell same deletes? test this, im not smart enough to know if thats right
+so then when we have a delete and a create on the same event, first by time wins? or idk :=
+idk lets test this shit
+
+ok it works (wtf?)
+
+ok what do i need rn
+write a client
+and a server
+
+client:
+recieve db if first time
+copy true db
+change the copy and log changes (into ram or logfile on exit)
+replay server patches on the original, and then ours without logging
+
+server:
+send initial db if first time
+if have patches since last time, send them
+and log last patch sent
+else play their patches and log them
+and last patch sent to them would be theirs lol
+
+yep seems like thats it
+
+1. how to send and recieve sqlite files
+2. how to copy the file
+3. how to log patches in a replayable way
+4. how to replay patches
+5. how to send and recieve patches
+6. write server and client logic
